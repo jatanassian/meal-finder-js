@@ -41,10 +41,26 @@ function searchMeal(e) {
   } else {
     alert('Please enter a search term');
   }
-
+  
 }
 
 
 
 // Event listeners
 submit.addEventListener('submit', searchMeal);
+
+// Get the ID of the meal we clicked on
+mealsEl.addEventListener('click', e => {
+  const mealInfo = e.path.find(item => {
+    if (item.classList) {
+      return item.classList.contains('meal-info');
+    } else {
+      return false;
+    }
+  });
+
+  if (mealInfo) {
+    const mealID = mealInfo.getAttribute('data-mealid');
+    getMealById(mealID);
+  }
+}
