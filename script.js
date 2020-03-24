@@ -13,7 +13,7 @@ function searchMeal(e) {
   single_mealEl.innerHTML = '';
 
   // Get search term
-  const term = search.nodeValue;
+  const term = search.value;
 
   // Check for empty
   if (term.trim()) {
@@ -25,7 +25,7 @@ function searchMeal(e) {
         if (data.meals === null) {
           resultHeading.innerHTML = '<p>No result found. Try again!</p>';
         } else {
-          mealsEl.innerHTML = data.meals.map(data => `
+          mealsEl.innerHTML = data.meals.map(meal => `
             <div class="meal">
               <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
               <div class="meal-info" data-mealID="${meal.idMeal}">
@@ -46,7 +46,7 @@ function searchMeal(e) {
 // Fetch meal by ID
 function getMealById(mealID) {
   fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
-    .then(res => res.json)
+    .then(res => res.json())
     .then(data => {
       const meal = data.meals[0];
 
@@ -60,7 +60,7 @@ function addMealToDOM(meal) {
 
   // Create an array of ingredient and quantity from the data of the API
   for (let i = 1; i <= 20; i++) {
-    if (meal[`stringIngredient${i}`]) {
+    if (meal[`strIngredient${i}`]) {
       ingredients.push(`${meal[`strIngredient${i}`]} - ${meal[`strMeasure${i}`]}`);
     } else {
       break;
@@ -70,7 +70,7 @@ function addMealToDOM(meal) {
   single_mealEl.innerHTML = `
     <div class="single-meal">
       <h1>${meal.strMeal}</h1>
-      <img src="${meal.strMealThumb}" alt="${strMeal}" />
+      <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
       <div class="single-meal-info">
         ${meal.strCategory ? `<p>${meal.strCategory}</p>` : ''}
         ${meal.strArea ? `<p>${meal.strArea}</p>` : ''}
@@ -79,7 +79,7 @@ function addMealToDOM(meal) {
         <p>${meal.strInstructions}</p>
         <h2>Ingredients</h2>
         <ul>
-          ${ingredients.map(ing => `<li>${ing}</li>`).joing('')}
+          ${ingredients.map(ing => `<li>${ing}</li>`).join('')}
         </ul>
       </div>
     </div>
@@ -105,4 +105,4 @@ mealsEl.addEventListener('click', e => {
     const mealID = mealInfo.getAttribute('data-mealid');
     getMealById(mealID);
   }
-}
+});
